@@ -7,12 +7,12 @@ import com.example.cleanarchitecture.data.repository.UserRepositoryImpl
 import com.example.cleanarchitecture.data.storage.sharedprefs.SharedPrefsUserStorage
 import com.example.cleanarchitecture.domain.usecase.GetUserNameUserCase
 import com.example.cleanarchitecture.domain.usecase.SaveUserNameUseCase
+import javax.inject.Inject
 
-class MainViewModelFactory(context: Context): ViewModelProvider.Factory {
+class MainViewModelFactory @Inject constructor(
+    private val getUserNameUseCase: GetUserNameUserCase,
+    private val saveUsernameUseCase: SaveUserNameUseCase): ViewModelProvider.Factory {
 
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = SharedPrefsUserStorage(context = context)) }
-    private val getUserNameUseCase by lazy { GetUserNameUserCase(userRepository = userRepository) }
-    private val saveUsernameUseCase by lazy { SaveUserNameUseCase(userRepository = userRepository) }
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return MainViewModel(
